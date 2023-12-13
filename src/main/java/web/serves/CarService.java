@@ -23,7 +23,11 @@ public class CarService {
     public List<Car> getCars() {
         return cars;
     }
+    public List<Car> getShortListCars(int count){
+        return cars.stream().limit(count).toList();
+    }
     public Car getSomeCar(int id){
         return cars.stream().filter(car -> car.getId() == id).findFirst().orElse(null);
     }
+
 }

@@ -6,6 +6,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import web.serves.CarService;
 
 @Controller
@@ -21,8 +22,14 @@ public class CarController {
 
 
     @GetMapping()
-    public String printCars(ModelMap model) {
-        model.addAttribute("cars", carService.getCars());
+    public String printCars(@RequestParam(value = "count", required = false) Integer count, ModelMap model) {
+        if (count != null && count >= 5) {
+            model.addAttribute("cars", carService.getCars());
+        } else if (count != null && count > 0) {
+            model.addAttribute("cars", carService.getShortListCars(count));
+        } else {
+            model.addAttribute("cars", carService.getCars());
+        }
         return "cars";
     }
 
@@ -31,5 +38,6 @@ public class CarController {
         model.addAttribute("car", carService.getSomeCar(id));
         return "car";
     }
+
 
 }
